@@ -16,21 +16,51 @@ A Next.js application for managing your flatshare with NextAuth.js authenticatio
   - Flatmate coordination
   - Payment tracking
 
+- 🐳 **Docker Support**
+  - Development and production Docker configurations
+  - PostgreSQL database container
+  - Database admin interface (Adminer)
+  - Health check endpoints
+
 ## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, TailwindCSS
 - **Authentication**: NextAuth.js v4
 - **Database**: PostgreSQL with Prisma ORM
+- **Deployment**: Docker & Docker Compose
 - **TypeScript**: Full type safety
 
-## Getting Started
+## Getting Started (Docker - Recommended)
 
 ### Prerequisites
 
-- Node.js 18+ 
-- PostgreSQL database (or use Prisma dev server)
+- Docker and Docker Compose
+- Git
 
-### Installation
+### Quick Start
+
+1. **Clone and start the application**:
+   ```bash
+   git clone <your-repo-url>
+   cd gutta-web
+   npm run docker:dev
+   ```
+
+2. **Set up the database**:
+   ```bash
+   # In another terminal, run database setup
+   docker-compose exec app npm run setup:db
+   ```
+
+3. **Visit the application**:
+   - **App**: [http://localhost:3000](http://localhost:3000)
+   - **Database Admin**: [http://localhost:8080](http://localhost:8080)
+
+That's it! 🎉
+
+### Manual Setup (Alternative)
+
+If you prefer running without Docker:
 
 1. **Install dependencies**:
    ```bash
@@ -41,19 +71,10 @@ A Next.js application for managing your flatshare with NextAuth.js authenticatio
    ```bash
    cp .env.example .env
    ```
-   
-   Edit `.env` with your values (most are pre-configured)
 
-3. **Set up the database**:
+3. **Start PostgreSQL** and **set up the database**:
    ```bash
-   # Start Prisma dev server (easiest for development)
-   npx prisma dev
-   
-   # Then in another terminal, push the schema
-   npx prisma db push
-   
-   # Generate Prisma client
-   npx prisma generate
+   npm run setup:db
    ```
 
 4. **Start the development server**:
@@ -61,19 +82,57 @@ A Next.js application for managing your flatshare with NextAuth.js authenticatio
    npm run dev
    ```
 
-5. **Visit the application**:
-   Open [http://localhost:3000](http://localhost:3000)
+## Docker Commands
+
+### Development
+```bash
+# Start development environment
+npm run docker:dev
+
+# Stop all containers
+npm run docker:down
+
+# Clean up containers and volumes
+npm run docker:clean
+
+# Database operations (inside container)
+docker-compose exec app npm run prisma:studio
+docker-compose exec app npm run setup:db
+```
+
+### Production
+```bash
+# Build and start production environment
+npm run docker:prod
+
+# Using environment file
+cp .env.prod.example .env.prod
+# Edit .env.prod with production values
+docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d
+```
+
+## Environment Configuration
+
+### Development (.env.docker.example)
+- Pre-configured for Docker development
+- Uses Docker PostgreSQL service
+- Includes database admin interface
+
+### Production (.env.prod.example)  
+- Template for production deployment
+- Secure database credentials
+- Production domain configuration
 
 ## Authentication Setup
 
 ### Google OAuth (Optional)
 
-To enable Google sign-in:
-
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create OAuth 2.0 credentials
-3. Add `http://localhost:3000/api/auth/callback/google` to redirect URIs
-4. Update `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env`
+3. Add redirect URIs:
+   - Development: `http://localhost:3000/api/auth/callback/google`
+   - Production: `https://yourdomain.com/api/auth/callback/google`
+4. Update `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in your environment files
 
 ### First User Setup
 
@@ -110,20 +169,45 @@ To enable Google sign-in:
 2. Use email/password or Google OAuth
 3. Access the dashboard after authentication
 
-## Development
+## Development Workflow
 
 ### Database Management
 
 ```bash
-# View database in Prisma Studio
-npx prisma studio
+# With Docker (recommended)
+docker-compose exec app npm run prisma:studio    # Open Prisma Studio
+docker-compose exec app npm run setup:db         # Setup database
+docker-compose exec app npm run prisma:migrate   # Run migrations
 
-# Reset database
-npx prisma db push --force-reset
-
-# Generate client after schema changes
-npx prisma generate
+# Without Docker
+npm run prisma:studio     # Open Prisma Studio  
+npm run setup:db         # Setup database
+npm run prisma:migrate   # Run migrations
 ```
+
+### Container Access
+
+```bash
+# Access app container shell
+docker-compose exec app sh
+
+# View logs
+docker-compose logs app
+docker-compose logs db
+
+# Monitor containers
+docker-compose ps
+```
+
+### Development vs Production
+
+| Feature | Development | Production |
+|---------|-------------|------------|
+| Hot Reload | ✅ Volume mounts | ❌ Optimized build |
+| Database Admin | ✅ Adminer on :8080 | ❌ Security focused |
+| Build Target | `dev` (faster) | `runner` (optimized) |
+| Volumes | Source code mounted | Standalone build |
+| Health Checks | Basic | Full monitoring |
 
 ## Security Features
 
@@ -133,9 +217,56 @@ npx prisma generate
 - Role-based access control
 - Secure environment variable handling
 
+## Deployment
+
+### Production Deployment
+
+1. **Prepare production environment**:
+   ```bash
+   cp .env.prod.example .env.prod
+   # Edit .env.prod with production values
+   ```
+
+2. **Deploy with Docker Compose**:
+   ```bash
+   docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d
+   ```
+
+3. **Initialize database**:
+   ```bash
+   docker-compose -f docker-compose.prod.yml exec app npm run setup:db
+   ```
+
+4. **Monitor health**:
+   - Health check: `https://yourdomain.com/api/health`
+   - View logs: `docker-compose -f docker-compose.prod.yml logs`
+
+### Container Orchestration
+
+The Docker setup is ready for:
+- **Kubernetes**: Use the Dockerfile with K8s manifests
+- **Docker Swarm**: Deploy with stack files
+- **Cloud Services**: AWS ECS, Google Cloud Run, Azure Container Instances
+
+## Architecture
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Next.js App  │◄──►│   PostgreSQL    │    │     Adminer     │
+│   (Port 3000)  │    │   (Port 5432)   │    │   (Port 8080)   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+        │                       │                       │
+        └───────────────────────┼───────────────────────┘
+                                │
+                        ┌─────────────────┐
+                        │  Docker Network │
+                        │ (gutta-network) │
+                        └─────────────────┘
+```
+
 ## Next Steps
 
-The authentication system is now fully set up. Future development can focus on:
+The authentication system is now fully set up with Docker support. Future development can focus on:
 
 1. **Expense Management**: Implement expense tracking and splitting
 2. **Task Management**: Build task assignment features  
@@ -143,3 +274,4 @@ The authentication system is now fully set up. Future development can focus on:
 4. **Notifications**: Email/SMS notifications
 5. **File Uploads**: Receipt management
 6. **Reporting**: Financial and task reports
+7. **CI/CD Pipeline**: Automated testing and deployment
