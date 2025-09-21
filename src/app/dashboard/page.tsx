@@ -37,6 +37,12 @@ export default function Dashboard() {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
+              <a
+                href="/quotes"
+                className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Quotes
+              </a>
               <span className="text-gray-700">
                 Welcome, {session.user?.name || session.user?.email}
               </span>
@@ -119,22 +125,22 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Flatmates Card */}
+            {/* Quotes Card */}
             <div className="bg-white overflow-hidden shadow rounded-lg">
               <div className="p-5">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-2.206-.259l-4.894 1.632c-.34.113-.716-.067-.829-.407a.849.849 0 01-.127-.424V16.51a8 8 0 1114.056-4.51z" />
                     </svg>
                   </div>
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">
-                        Flatmates
+                        Flatmate Quotes
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        Coming Soon
+                        Funny Things We Say
                       </dd>
                     </dl>
                   </div>
@@ -142,8 +148,8 @@ export default function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3">
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                    View all flatmates
+                  <a href="/quotes" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    View all quotes
                   </a>
                 </div>
               </div>

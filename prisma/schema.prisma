@@ -59,6 +59,8 @@ model User {
   expenses      Expense[]
   tasks         Task[]
   assignedTasks Task[]    @relation("TaskAssignee")
+  quotesAuthored Quote[]  @relation("QuoteAuthor")
+  quotesSubmitted Quote[] @relation("QuoteSubmitter")
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -158,4 +160,26 @@ enum TaskStatus {
   IN_PROGRESS
   COMPLETED
   CANCELLED
+}
+
+model Quote {
+  id          String   @id @default(cuid())
+  text        String   @db.Text
+  author      String   // Name of the person who said it
+  authorId    String?  // Optional: Link to User who said it
+  authorUser  User?    @relation("QuoteAuthor", fields: [authorId], references: [id])
+  
+  submittedBy String
+  submitter   User     @relation("QuoteSubmitter", fields: [submittedBy], references: [id])
+  
+  context     String?  // Optional context about when/where it was said
+  isApproved  Boolean  @default(true)  // For moderation if needed
+  isFavorite  Boolean  @default(false) // Mark favorite quotes
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([createdAt])
+  @@index([authorId])
+  @@index([submittedBy])
 }
