@@ -96,8 +96,8 @@ npm run docker:down
 npm run docker:clean
 
 # Database operations (inside container)
-docker-compose exec app npm run prisma:studio
-docker-compose exec app npm run setup:db
+docker compose exec app npm run prisma:studio
+docker compose exec app npm run setup:db
 ```
 
 ### Production
@@ -108,7 +108,7 @@ npm run docker:prod
 # Using environment file
 cp .env.prod.example .env.prod
 # Edit .env.prod with production values
-docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d
+docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
 ```
 
 ## Environment Configuration
@@ -189,14 +189,14 @@ npm run prisma:migrate   # Run migrations
 
 ```bash
 # Access app container shell
-docker-compose exec app sh
+docker compose exec app sh
 
 # View logs
-docker-compose logs app
-docker-compose logs db
+docker compose logs app
+docker compose logs db
 
 # Monitor containers
-docker-compose ps
+docker compose ps
 ```
 
 ### Development vs Production
@@ -229,17 +229,17 @@ docker-compose ps
 
 2. **Deploy with Docker Compose**:
    ```bash
-   docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d
+   docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
    ```
 
 3. **Initialize database**:
    ```bash
-   docker-compose -f docker-compose.prod.yml exec app npm run setup:db
+   docker compose -f docker-compose.prod.yml exec app npm run setup:db
    ```
 
 4. **Monitor health**:
    - Health check: `https://yourdomain.com/api/health`
-   - View logs: `docker-compose -f docker-compose.prod.yml logs`
+   - View logs: `docker compose -f docker-compose.prod.yml logs`
 
 ### Container Orchestration
 
