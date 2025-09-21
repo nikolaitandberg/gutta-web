@@ -153,14 +153,14 @@ export default function QuotesPage() {
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Flatmate Quotes</h1>
-                <p className="text-gray-600">The funny things we say</p>
+                <h1 className="text-2xl font-bold text-gray-900">Sitater</h1>
+                <p className="text-gray-600">Gutta kødder ass</p>
               </div>
               <button
                 onClick={() => setShowAddForm(!showAddForm)}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                {showAddForm ? "Cancel" : "Add Quote"}
+                {showAddForm ? "Avbryt" : "Legg til sitat"}
               </button>
             </div>
           </div>
@@ -171,13 +171,13 @@ export default function QuotesPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="quote-text" className="block text-sm font-medium text-gray-700">
-                    Quote
+                    Sitat
                   </label>
                   <textarea
                     id="quote-text"
                     rows={3}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="What did they say?"
+                    placeholder="Hva sa de?"
                     value={newQuote.text}
                     onChange={(e) => setNewQuote({ ...newQuote, text: e.target.value })}
                     required
@@ -186,13 +186,13 @@ export default function QuotesPage() {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
                     <label htmlFor="author" className="block text-sm font-medium text-gray-700">
-                      Who said it?
+                      Hvem sa det?
                     </label>
                     <input
                       type="text"
                       id="author"
                       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Flatmate name"
+                      placeholder="Navn"
                       value={newQuote.author}
                       onChange={(e) => setNewQuote({ ...newQuote, author: e.target.value })}
                       required
@@ -200,13 +200,13 @@ export default function QuotesPage() {
                   </div>
                   <div>
                     <label htmlFor="context" className="block text-sm font-medium text-gray-700">
-                      Context (optional)
+                      Kontekst (valgfritt)
                     </label>
                     <input
                       type="text"
                       id="context"
                       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="When/where was this said?"
+                      placeholder="Når/hvor/i hvilken situasjon sa de det?"
                       value={newQuote.context}
                       onChange={(e) => setNewQuote({ ...newQuote, context: e.target.value })}
                     />
@@ -217,7 +217,7 @@ export default function QuotesPage() {
                     type="submit"
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
-                    Add Quote
+                    Legg til sitat
                   </button>
                 </div>
               </form>
@@ -257,7 +257,7 @@ export default function QuotesPage() {
                           <p className="text-sm text-gray-500">{quote.context}</p>
                         )}
                         <p className="text-xs text-gray-400 mt-1">
-                          Added by {quote.submitter.name} on {new Date(quote.createdAt).toLocaleDateString()}
+                          Lagt til av {quote.submitter.name} den {new Date(quote.createdAt).toLocaleDateString("no-NO")}
                         </p>
                       </div>
                       <div className="flex items-center space-x-2">
