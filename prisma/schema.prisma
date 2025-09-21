@@ -1,0 +1,161 @@
+// Prisma schema file for gutta-web flatshare application
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // For credentials auth
+  role          UserRole  @default(RESIDENT)
+  
+  // Flatshare specific fields
+  phoneNumber   String?
+  moveInDate    DateTime?
+  moveOutDate   DateTime?
+  roomNumber    String?
+  isActive      Boolean   @default(true)
+  
+  accounts      Account[]
+  sessions      Session[]
+  expenses      Expense[]
+  tasks         Task[]
+  assignedTasks Task[]    @relation("TaskAssignee")
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Flatshare specific models
+enum UserRole {
+  ADMIN
+  RESIDENT
+  FORMER_RESIDENT
+}
+
+model Expense {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  amount      Decimal     @db.Decimal(10, 2)
+  category    ExpenseCategory
+  paidBy      String
+  paidByUser  User        @relation(fields: [paidBy], references: [id])
+  date        DateTime    @default(now())
+  receipt     String?     // URL to receipt image
+  
+  splits      ExpenseSplit[]
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model ExpenseSplit {
+  id        String   @id @default(cuid())
+  expenseId String
+  userId    String
+  amount    Decimal  @db.Decimal(10, 2)
+  isPaid    Boolean  @default(false)
+  
+  expense   Expense  @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  
+  @@unique([expenseId, userId])
+}
+
+enum ExpenseCategory {
+  GROCERIES
+  UTILITIES
+  RENT
+  CLEANING
+  MAINTENANCE
+  INTERNET
+  OTHER
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  category    TaskCategory
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(PENDING)
+  
+  createdBy   String
+  creator     User       @relation(fields: [createdBy], references: [id])
+  assignedTo  String?
+  assignee    User?      @relation("TaskAssignee", fields: [assignedTo], references: [id])
+  
+  dueDate     DateTime?
+  completedAt DateTime?
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+enum TaskCategory {
+  CLEANING
+  MAINTENANCE
+  SHOPPING
+  ADMIN
+  OTHER
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}

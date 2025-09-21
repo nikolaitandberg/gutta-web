@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gutta Web - Flatshare Management Application
+
+A Next.js application for managing your flatshare with NextAuth.js authentication and Prisma database integration.
+
+## Features
+
+- 🔐 **Authentication System**
+  - Email/password authentication
+  - Google OAuth integration
+  - Role-based access (Admin, Resident, Former Resident)
+  - Secure session management
+
+- 🏠 **Flatshare Management** (Coming Soon)
+  - Shared expense tracking  
+  - Task assignment and management
+  - Flatmate coordination
+  - Payment tracking
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TailwindCSS
+- **Authentication**: NextAuth.js v4
+- **Database**: PostgreSQL with Prisma ORM
+- **TypeScript**: Full type safety
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ 
+- PostgreSQL database (or use Prisma dev server)
+
+### Installation
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables**:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` with your values (most are pre-configured)
+
+3. **Set up the database**:
+   ```bash
+   # Start Prisma dev server (easiest for development)
+   npx prisma dev
+   
+   # Then in another terminal, push the schema
+   npx prisma db push
+   
+   # Generate Prisma client
+   npx prisma generate
+   ```
+
+4. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+
+5. **Visit the application**:
+   Open [http://localhost:3000](http://localhost:3000)
+
+## Authentication Setup
+
+### Google OAuth (Optional)
+
+To enable Google sign-in:
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create OAuth 2.0 credentials
+3. Add `http://localhost:3000/api/auth/callback/google` to redirect URIs
+4. Update `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env`
+
+### First User Setup
+
+- The first user to register will automatically become an **Admin**
+- Subsequent users will be **Residents** by default
+
+## Database Schema
+
+### Authentication Models (NextAuth.js)
+- `User` - User accounts with flatshare-specific fields
+- `Account` - OAuth account linking  
+- `Session` - User sessions
+- `VerificationToken` - Email verification tokens
+
+### Flatshare Models
+- `Expense` - Shared expenses with categories
+- `ExpenseSplit` - Individual expense splits per user
+- `Task` - House tasks and assignments
+
+### User Roles
+- `ADMIN` - Full access to all features
+- `RESIDENT` - Standard flatmate access
+- `FORMER_RESIDENT` - Limited access for past residents
+
+## Usage
+
+### Registration
+1. Visit `/auth/register`
+2. Fill in your details (name, email, password, optional phone/room)
+3. First user becomes admin automatically
+
+### Sign In
+1. Visit `/auth/signin` or the home page
+2. Use email/password or Google OAuth
+3. Access the dashboard after authentication
+
+## Development
+
+### Database Management
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# View database in Prisma Studio
+npx prisma studio
+
+# Reset database
+npx prisma db push --force-reset
+
+# Generate client after schema changes
+npx prisma generate
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Security Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Password hashing with bcrypt
+- JWT-based sessions with NextAuth.js
+- CSRF protection
+- Role-based access control
+- Secure environment variable handling
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Next Steps
 
-## Learn More
+The authentication system is now fully set up. Future development can focus on:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Expense Management**: Implement expense tracking and splitting
+2. **Task Management**: Build task assignment features  
+3. **User Management**: Admin panel for managing flatmates
+4. **Notifications**: Email/SMS notifications
+5. **File Uploads**: Receipt management
+6. **Reporting**: Financial and task reports
