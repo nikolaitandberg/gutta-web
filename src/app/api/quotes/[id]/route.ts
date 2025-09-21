@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,7 +15,8 @@ export async function PUT(
     }
 
     const { text, author, context, isFavorite } = await request.json()
-    const quoteId = params.id
+    const resolvedParams = await params
+    const quoteId = resolvedParams.id
 
     // Check if quote exists and user has permission to edit
     const existingQuote = await prisma.quote.findUnique({
@@ -69,7 +70,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -78,7 +79,8 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const quoteId = params.id
+    const resolvedParams = await params
+    const quoteId = resolvedParams.id
 
     // Check if quote exists and user has permission to delete
     const existingQuote = await prisma.quote.findUnique({

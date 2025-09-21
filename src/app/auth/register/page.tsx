@@ -67,7 +67,7 @@ export default function Register() {
       } else {
         setError(data.error || "An error occurred")
       }
-    } catch (error) {
+    } catch {
       setError("Network error. Please try again.")
     } finally {
       setLoading(false)

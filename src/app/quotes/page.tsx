@@ -58,7 +58,7 @@ export default function QuotesPage() {
       } else {
         setError("Failed to fetch quotes")
       }
-    } catch (error) {
+    } catch {
       setError("Error loading quotes")
     } finally {
       setLoading(false)
@@ -90,7 +90,7 @@ export default function QuotesPage() {
       } else {
         setError("Failed to add quote")
       }
-    } catch (error) {
+    } catch {
       setError("Error adding quote")
     }
   }
@@ -248,7 +248,7 @@ export default function QuotesPage() {
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <blockquote className="text-lg italic text-gray-900 mb-3">
-                      "{quote.text}"
+                      &ldquo;{quote.text}&rdquo;
                     </blockquote>
                     <div className="flex items-center justify-between">
                       <div>

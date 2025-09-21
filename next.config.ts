@@ -4,16 +4,13 @@ const nextConfig: NextConfig = {
   // Enable standalone output for Docker production builds
   output: 'standalone',
   
-  // Configure for Docker networking
-  experimental: {
-    // Enable server-side runtime config
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
+  // Configure external packages for server components
+  serverExternalPackages: ['@prisma/client'],
   
   // Optimize for container environments
   poweredByHeader: false,
   
-  // Enable experimental features for better Docker compatibility
+  // Enable transpilation for better Docker compatibility
   transpilePackages: [],
 };
 
