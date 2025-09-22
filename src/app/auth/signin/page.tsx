@@ -27,7 +27,7 @@ export default function SignIn() {
       if (result?.error) {
         setError("Invalid credentials")
       } else {
-        router.push("/dashboard")
+        router.push("/dashbord")
         router.refresh()
       }
     } catch {
@@ -38,7 +38,7 @@ export default function SignIn() {
   }
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/dashboard" })
+    signIn("google", { callbackUrl: "/dashbord" })
   }
 
   return (
