@@ -31,10 +31,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <Image
-        src={"/1M1A5123-2-min.jpg"}
+        src={"/gutta.jpg"}
         alt="Gutta på hjørnet"
-        width={800}
-        height={400}
+        width={4661}
+        height={2622}
+        style={{ minWidth: '300px', width: '60%', height: 'auto' }}
         className="mx-auto"
         priority
       />
