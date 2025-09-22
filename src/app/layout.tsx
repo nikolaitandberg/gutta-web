@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gutta Web - Flatshare Management",
-  description: "Internal flatshare management application",
+  title: "Gutta-web",
+  description: "Nettside til gutta på hjørnet ",
 };
 
 export default function RootLayout({
