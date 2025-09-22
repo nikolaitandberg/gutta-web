@@ -11,7 +11,7 @@ A Next.js application for managing your flatshare with NextAuth.js authenticatio
   - Secure session management
 
 - 🏠 **Flatshare Management** (Coming Soon)
-  - Shared expense tracking  
+  - Shared expense tracking
   - Task assignment and management
   - Flatmate coordination
   - Payment tracking
@@ -40,6 +40,7 @@ A Next.js application for managing your flatshare with NextAuth.js authenticatio
 ### Quick Start
 
 1. **Clone and start the application**:
+
    ```bash
    git clone <your-repo-url>
    cd gutta-web
@@ -47,6 +48,7 @@ A Next.js application for managing your flatshare with NextAuth.js authenticatio
    ```
 
 2. **Set up the database**:
+
    ```bash
    # In another terminal, run database setup
    docker-compose exec app npm run setup:db
@@ -63,16 +65,19 @@ That's it! 🎉
 If you prefer running without Docker:
 
 1. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 2. **Set up environment variables**:
+
    ```bash
    cp .env.example .env
    ```
 
 3. **Start PostgreSQL** and **set up the database**:
+
    ```bash
    npm run setup:db
    ```
@@ -85,6 +90,7 @@ If you prefer running without Docker:
 ## Docker Commands
 
 ### Development
+
 ```bash
 # Start development environment
 npm run docker:dev
@@ -101,6 +107,7 @@ docker compose exec app npm run setup:db
 ```
 
 ### Production
+
 ```bash
 # Build and start production environment
 npm run docker:prod
@@ -114,11 +121,13 @@ docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
 ## Environment Configuration
 
 ### Development (.env.docker.example)
+
 - Pre-configured for Docker development
 - Uses Docker PostgreSQL service
 - Includes database admin interface
 
-### Production (.env.prod.example)  
+### Production (.env.prod.example)
+
 - Template for production deployment
 - Secure database credentials
 - Production domain configuration
@@ -142,17 +151,20 @@ docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
 ## Database Schema
 
 ### Authentication Models (NextAuth.js)
+
 - `User` - User accounts with flatshare-specific fields
-- `Account` - OAuth account linking  
+- `Account` - OAuth account linking
 - `Session` - User sessions
 - `VerificationToken` - Email verification tokens
 
 ### Flatshare Models
+
 - `Expense` - Shared expenses with categories
 - `ExpenseSplit` - Individual expense splits per user
 - `Task` - House tasks and assignments
 
 ### User Roles
+
 - `ADMIN` - Full access to all features
 - `RESIDENT` - Standard flatmate access
 - `FORMER_RESIDENT` - Limited access for past residents
@@ -160,11 +172,13 @@ docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
 ## Usage
 
 ### Registration
+
 1. Visit `/auth/register`
 2. Fill in your details (name, email, password, optional phone/room)
 3. First user becomes admin automatically
 
 ### Sign In
+
 1. Visit `/auth/signin` or the home page
 2. Use email/password or Google OAuth
 3. Access the dashboard after authentication
@@ -180,7 +194,7 @@ docker-compose exec app npm run setup:db         # Setup database
 docker-compose exec app npm run prisma:migrate   # Run migrations
 
 # Without Docker
-npm run prisma:studio     # Open Prisma Studio  
+npm run prisma:studio     # Open Prisma Studio
 npm run setup:db         # Setup database
 npm run prisma:migrate   # Run migrations
 ```
@@ -201,13 +215,13 @@ docker compose ps
 
 ### Development vs Production
 
-| Feature | Development | Production |
-|---------|-------------|------------|
-| Hot Reload | ✅ Volume mounts | ❌ Optimized build |
-| Database Admin | ✅ Adminer on :8080 | ❌ Security focused |
-| Build Target | `dev` (faster) | `runner` (optimized) |
-| Volumes | Source code mounted | Standalone build |
-| Health Checks | Basic | Full monitoring |
+| Feature        | Development         | Production           |
+| -------------- | ------------------- | -------------------- |
+| Hot Reload     | ✅ Volume mounts    | ❌ Optimized build   |
+| Database Admin | ✅ Adminer on :8080 | ❌ Security focused  |
+| Build Target   | `dev` (faster)      | `runner` (optimized) |
+| Volumes        | Source code mounted | Standalone build     |
+| Health Checks  | Basic               | Full monitoring      |
 
 ## Security Features
 
@@ -222,17 +236,20 @@ docker compose ps
 ### Production Deployment
 
 1. **Prepare production environment**:
+
    ```bash
    cp .env.prod.example .env.prod
    # Edit .env.prod with production values
    ```
 
 2. **Deploy with Docker Compose**:
+
    ```bash
    docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
    ```
 
 3. **Initialize database**:
+
    ```bash
    docker compose -f docker-compose.prod.yml exec app npm run setup:db
    ```
@@ -244,6 +261,7 @@ docker compose ps
 ### Container Orchestration
 
 The Docker setup is ready for:
+
 - **Kubernetes**: Use the Dockerfile with K8s manifests
 - **Docker Swarm**: Deploy with stack files
 - **Cloud Services**: AWS ECS, Google Cloud Run, Azure Container Instances
@@ -269,7 +287,7 @@ The Docker setup is ready for:
 The authentication system is now fully set up with Docker support. Future development can focus on:
 
 1. **Expense Management**: Implement expense tracking and splitting
-2. **Task Management**: Build task assignment features  
+2. **Task Management**: Build task assignment features
 3. **User Management**: Admin panel for managing flatmates
 4. **Notifications**: Email/SMS notifications
 5. **File Uploads**: Receipt management

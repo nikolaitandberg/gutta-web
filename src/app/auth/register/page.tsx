@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -12,34 +12,34 @@ export default function Register() {
     confirmPassword: "",
     phoneNumber: "",
     roomNumber: "",
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
-  const router = useRouter()
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
-      setLoading(false)
-      return
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
     }
 
     if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters long")
-      setLoading(false)
-      return
+      setError("Password must be at least 6 characters long");
+      setLoading(false);
+      return;
     }
 
     try {
@@ -55,24 +55,24 @@ export default function Register() {
           phoneNumber: formData.phoneNumber,
           roomNumber: formData.roomNumber,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (response.ok) {
-        setSuccess(true)
+        setSuccess(true);
         setTimeout(() => {
-          router.push("/auth/signin")
-        }, 2000)
+          router.push("/auth/signin");
+        }, 2000);
       } else {
-        setError(data.error || "An error occurred")
+        setError(data.error || "An error occurred");
       }
     } catch {
-      setError("Network error. Please try again.")
+      setError("Network error. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (success) {
     return (
@@ -84,7 +84,7 @@ export default function Register() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -192,7 +192,10 @@ export default function Register() {
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <Link href="/auth/signin" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <Link
+                href="/auth/signin"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
                 Sign in here
               </Link>
             </p>
@@ -200,5 +203,5 @@ export default function Register() {
         </form>
       </div>
     </div>
-  )
+  );
 }

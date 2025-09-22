@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
-import { useSession, signOut } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { Wallet, ListTodo, MessageSquareQuote } from "lucide-react"
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { Wallet, ListTodo, MessageSquareQuote } from "lucide-react";
 
 export default function Dashboard() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/auth/signin")
+      router.push("/auth/signin");
     }
-  }, [status, router])
+  }, [status, router]);
 
   if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-lg">Loading...</div>
       </div>
-    )
+    );
   }
 
   if (!session) {
-    return null
+    return null;
   }
 
   return (
@@ -87,7 +87,10 @@ export default function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3">
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <a
+                    href="#"
+                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  >
                     Gå til utgifter
                   </a>
                 </div>
@@ -115,7 +118,10 @@ export default function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3">
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <a
+                    href="#"
+                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  >
                     Gå til husoppgaver
                   </a>
                 </div>
@@ -143,7 +149,10 @@ export default function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3">
                 <div className="text-sm">
-                  <a href="/sitater" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <a
+                    href="/sitater"
+                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  >
                     Gå til sitater
                   </a>
                 </div>
@@ -158,16 +167,22 @@ export default function Dashboard() {
                 Velkommen til internsidene til gutta på hjørnet!
               </h3>
               <div className="mt-2 max-w-xl text-sm text-gray-500">
-                <p>
-                  Her kommer det mer etter hvert kanskje...
-                </p>
+                <p>Her kommer det mer etter hvert kanskje...</p>
               </div>
               <div className="mt-5">
                 <p className="text-sm text-gray-600">
-                  <strong>Dine kontodetaljer:</strong><br />
-                  E-post: {session.user?.email}<br />
-                  Rolle: {session.user?.role}<br />
-                  {session.user?.name && <>Navn: {session.user.name}<br /></>}
+                  <strong>Dine kontodetaljer:</strong>
+                  <br />
+                  E-post: {session.user?.email}
+                  <br />
+                  Rolle: {session.user?.role}
+                  <br />
+                  {session.user?.name && (
+                    <>
+                      Navn: {session.user.name}
+                      <br />
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -175,5 +190,5 @@ export default function Dashboard() {
         </div>
       </main>
     </div>
-  )
+  );
 }

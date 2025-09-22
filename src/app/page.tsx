@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/dashboard")
+      router.push("/dashboard");
     }
-  }, [status, router])
+  }, [status, router]);
 
   if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-lg">Loading...</div>
       </div>
-    )
+    );
   }
 
   if (session) {
-    return null // Will redirect to dashboard
+    return null; // Will redirect to dashboard
   }
 
   return (
@@ -35,7 +35,7 @@ export default function Home() {
         alt="Gutta på hjørnet"
         width={4661}
         height={2622}
-        style={{ minWidth: '300px', width: '60%', height: 'auto' }}
+        style={{ minWidth: "300px", width: "60%", height: "auto" }}
         className="mx-auto"
         priority
       />
@@ -68,5 +68,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }

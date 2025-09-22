@@ -1,45 +1,45 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignIn() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
       const result = await signIn("credentials", {
         email,
         password,
         redirect: false,
-      })
+      });
 
       if (result?.error) {
-        setError("Invalid credentials")
+        setError("Invalid credentials");
       } else {
-        router.push("/dashbord")
-        router.refresh()
+        router.push("/dashbord");
+        router.refresh();
       }
     } catch {
-      setError("An error occurred. Please try again.")
+      setError("An error occurred. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/dashbord" })
-  }
+    signIn("google", { callbackUrl: "/dashbord" });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -99,7 +99,9 @@ export default function SignIn() {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-50 text-gray-500">Eller logg inn med</span>
+                <span className="px-2 bg-gray-50 text-gray-500">
+                  Eller logg inn med
+                </span>
               </div>
             </div>
 
@@ -135,7 +137,10 @@ export default function SignIn() {
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Ny romkamerat?{" "}
-              <Link href="/auth/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <Link
+                href="/auth/register"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
                 Registrer deg her
               </Link>
             </p>
@@ -143,5 +148,5 @@ export default function SignIn() {
         </form>
       </div>
     </div>
-  )
+  );
 }
